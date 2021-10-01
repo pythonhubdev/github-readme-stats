@@ -294,6 +294,30 @@ const themes = {
     text_color: "FFFFFF",
     bg_color: "2C2F33",
   },
+  aura_dark: {
+    title_color: "ff7372",
+    icon_color: "6cffd0",
+    text_color: "dbdbdb",
+    bg_color: "252334",
+  },
+  panda: {
+    title_color: "19f9d899",
+    icon_color: "19f9d899",
+    text_color: "FF75B5",
+    bg_color: "31353a",
+  },
+  noctis_minimus: {
+    title_color: "d3b692",
+    icon_color: "72b7c0",
+    text_color: "c5cdd3",
+    bg_color: "1b2932",
+  },
+  cobalt2: {
+    title_color: "ffc600",
+    icon_color: "ffffff",
+    text_color: "0088ff",
+    bg_color: "193549",
+  },
 };
 
 module.exports = themes;

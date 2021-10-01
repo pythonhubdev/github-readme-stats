@@ -1,6 +1,7 @@
 const axios = require("axios");
 const wrap = require("word-wrap");
 const themes = require("../../themes");
+const toEmoji = require("emoji-name-map");
 
 const renderError = (message, secondaryMessage = "") => {
   return `
@@ -88,22 +89,28 @@ function request(data, headers) {
 }
 
 /**
+ * @param {object} props
+ * @param {string[]} props.items
+ * @param {number} props.gap
+ * @param {number[]} props.sizes
+ * @param {"column" | "row"} props.direction
  *
- * @param {String[]} items
- * @param {Number} gap
- * @param {string} direction
+ * @returns {string[]}
  *
  * @description
  * Auto layout utility, allows us to layout things
  * vertically or horizontally with proper gaping
  */
-function flexLayout({ items, gap, direction }) {
+function flexLayout({ items, gap, direction, sizes = [] }) {
+  let lastSize = 0;
   // filter() for filtering out empty strings
   return items.filter(Boolean).map((item, i) => {
-    let transform = `translate(${gap * i}, 0)`;
+    const size = sizes[i] || 0;
+    let transform = `translate(${lastSize}, 0)`;
     if (direction === "column") {
-      transform = `translate(0, ${gap * i})`;
+      transform = `translate(0, ${lastSize})`;
     }
+    lastSize += size + gap;
     return `<g transform="${transform}">${item}</g>`;
   });
 }
@@ -230,6 +237,39 @@ function measureText(str, fontSize = 10) {
       .reduce((cur, acc) => acc + cur) * fontSize
   );
 }
+const lowercaseTrim = (name) => name.toLowerCase().trim();
+
+/**
+ * @template T
+ * @param {Array<T>} arr
+ * @param {number} perChunk
+ * @returns {Array<T>}
+ */
+function chunkArray(arr, perChunk) {
+  return arr.reduce((resultArray, item, index) => {
+    const chunkIndex = Math.floor(index / perChunk);
+
+    if (!resultArray[chunkIndex]) {
+      resultArray[chunkIndex] = []; // start a new chunk
+    }
+
+    resultArray[chunkIndex].push(item);
+
+    return resultArray;
+  }, []);
+}
+
+/**
+ *
+ * @param {string} str
+ * @returns {string}
+ */
+function parseEmojis(str) {
+  if (!str) throw new Error("[parseEmoji]: str argument not provided");
+  return str.replace(/:\w+:/gm, (emoji) => {
+    return toEmoji.get(emoji) || "";
+  });
+}
 
 module.exports = {
   renderError,
@@ -248,4 +288,7 @@ module.exports = {
   logger,
   CONSTANTS,
   CustomError,
+  lowercaseTrim,
+  chunkArray,
+  parseEmojis,
 };
