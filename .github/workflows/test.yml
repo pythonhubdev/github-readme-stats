@@ -18,23 +18,16 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
-          node-version: "12.x"
-
-      - name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm
-          key:
-            ${{ runner.os }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-cache-
+          node-version: "16.x"
 
       - name: Install & Test
         run: |
-          npm install
+          npm ci
           npm run test
+
+      - name: Run Prettier
+        run: |
+          npm run format:check
 
       - name: Code Coverage
         uses: codecov/codecov-action@v1
