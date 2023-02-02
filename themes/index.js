@@ -12,6 +12,12 @@ export const themes = {
     text_color: "434d58",
     bg_color: "fffefe",
   },
+  transparent: {
+    title_color: "006AFF",
+    icon_color: "0579C3",
+    text_color: "417E87",
+    bg_color: "ffffff00",
+  },
   dark: {
     title_color: "fff",
     icon_color: "79ff97",
@@ -360,6 +366,13 @@ export const themes = {
     icon_color: "ebbcba",
     text_color: "e0def4",
     bg_color: "191724",
+  },
+  date_night: {
+    title_color: "DA7885",
+    text_color: "E1B2A2",
+    icon_color: "BB8470",
+    border_color: "170F0C",
+    bg_color: "170F0C",
   },
 };
 
